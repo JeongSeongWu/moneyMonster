@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faQuestion } from "@fortawesome/free-solid-svg-icons";
+import { faKey } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -15,7 +18,7 @@ const LoginContainer = styled.div`
     align-items: center;
     justify-content: center;
     width: 300px;
-    height: 400px;
+    height: 470px;
     box-shadow: 0 0 5px #e5e5e5;
     border-radius: 5px;
     background: linear-gradient( to bottom, #0057A1, #1C3775 );
@@ -28,6 +31,7 @@ const Title = styled.div`
     justify-content: center;
     align-items: center;   
     color: #ffffff;
+    margin-bottom: 10px;
 `
 
 const InputBtnContainer = styled.div`
@@ -46,17 +50,6 @@ const InnerContainer = styled.div`
     /* border-top: 1px dashed black;
     border-bottom: 1px dashed black; */
 `
-
-const BottomContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    bottom: 3px;
-    width: 100%;
-    height: 40px;
-    
-`;
 
 const InputTitle = styled.div`
     color: #ffffff;
@@ -104,7 +97,7 @@ const InputContainer = styled.div`
     flex-direction: column;
 `
 
-const LoginBtn = styled.div`
+const SignUpBtn = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -116,10 +109,50 @@ const LoginBtn = styled.div`
     /* background-color: #BBC7CE; */
     background-color: #ffffff;
     cursor: pointer;
+    :hover {
+        background-color: #03257E;
+        color: #ffffff;
+        border: 1px solid #0057A1;
+        box-sizing: border-box;
+    }
 `;
+
+const ErrMsg = styled.div`
+    position: absolute;
+    width: 220px;
+    height: 25px;
+    padding: 0px;
+    background: #FFFFFF;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    :after {
+        content: '';
+        position: absolute;
+        border-style: solid;
+        border-width: 8px 10px 0;
+        border-color: #FFFFFF transparent;
+        display: block;
+        width: 0;
+        z-index: 1;
+        bottom: -8px;
+        left: 34px;
+    }
+`
 
 
 function SignUp() {
+
+    const [emailErr, setEmailErr] = useState(false);
+
+    const checkEmail = (email) => {
+        let regExp = /^([\w\.\_\-])*[a-zA-Z0-9]+([\w\.\_\-])*([a-zA-Z0-9])+([\w\.\_\-])+@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,8}$/;
+        
+        return regExp.test(email);
+    };
+
+    
+
     return (
         <LoginContainer>
             <InnerContainer>
@@ -127,7 +160,7 @@ function SignUp() {
                 <InputBtnContainer>
                     <InputContainer>
                         <InputTitle>e-mail</InputTitle>
-                        <Email></Email>
+                        <Email onChange={checkEmail}></Email>
                         <MailIcon>
                             <FontAwesomeIcon icon={faEnvelope} color="#ffffff"/>
                         </MailIcon>
@@ -136,26 +169,40 @@ function SignUp() {
                         <InputTitle>name</InputTitle>
                         <Email></Email>
                         <MailIcon>
-                            <FontAwesomeIcon icon={faEnvelope} color="#ffffff"/>
+                            <FontAwesomeIcon icon={faUser} color="#ffffff"/>
                         </MailIcon>
                     </InputContainer>
                     <InputContainer>
                         <InputTitle>password</InputTitle>
-                        <Password></Password>
+                        <Password type='password'></Password>
                         <LockIcon>
                             <FontAwesomeIcon icon={faLock} color="#ffffff"/>
                         </LockIcon>
                     </InputContainer>
                     <InputContainer>
-                        <InputTitle>password</InputTitle>
-                        <Password></Password>
+                        <InputTitle>password_check</InputTitle>
+                        <Password type='password'></Password>
                         <LockIcon>
                             <FontAwesomeIcon icon={faLock} color="#ffffff"/>
                         </LockIcon>
                     </InputContainer>
-                    <LoginBtn>
-                        Login
-                    </LoginBtn>
+                    <InputContainer>
+                        <InputTitle>question</InputTitle>
+                        <Password></Password>
+                        <LockIcon>
+                            <FontAwesomeIcon icon={faQuestion} color="#ffffff"/>
+                        </LockIcon>
+                    </InputContainer>
+                    <InputContainer>
+                        <InputTitle>anwser</InputTitle>
+                        <Password></Password>
+                        <LockIcon>
+                            <FontAwesomeIcon icon={faKey} color="#ffffff"/>
+                        </LockIcon>
+                    </InputContainer>
+                    <SignUpBtn>
+                        Sign Up
+                    </SignUpBtn>
                     
                 </InputBtnContainer>
          
