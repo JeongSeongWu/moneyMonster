@@ -1,12 +1,13 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faQuestion } from "@fortawesome/free-solid-svg-icons";
 import { faKey } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const LoginContainer = styled.div`
@@ -18,7 +19,7 @@ const LoginContainer = styled.div`
     align-items: center;
     justify-content: center;
     width: 300px;
-    height: 470px;
+    height: 550px;
     box-shadow: 0 0 5px #e5e5e5;
     border-radius: 5px;
     background: linear-gradient( to bottom, #0057A1, #1C3775 );
@@ -46,9 +47,8 @@ const InnerContainer = styled.div`
     justify-content: space-around;
     flex-direction: column;
     width: 300px;
-    height: 350px;
-    /* border-top: 1px dashed black;
-    border-bottom: 1px dashed black; */
+    height: 480px;
+    
 `
 
 const InputTitle = styled.div`
@@ -68,26 +68,80 @@ const LockIcon = styled.div`
     left: 10px;
 `
 
-const Email = styled.input`
+const AngleDown = styled.div`
+    position: absolute;
+    top: 20px;
+    right: 5px;
+    cursor: pointer;
+`
+
+const InputBox = styled.input`
     width: 240px;
     height: 25px;
     border: none;
     padding-left: 30px;
     box-sizing: border-box;
     border-radius: 2px;
-    box-shadow: 1px 1px 1px #e5e5e5;
+    /* box-shadow: 1px 1px 1px #e5e5e5; */
     background-color: #9BB7D4;
 `;
 
-const Password = styled.input`
+const Select = styled.div`
+    position: relative;
     width: 240px;
     height: 25px;
+    border: none;
     padding-left: 30px;
     box-sizing: border-box;
-    border: none;
     border-radius: 2px;
-    box-shadow: 1px 1px 1px #e5e5e5;
+    /* box-shadow: 1px 1px 1px #e5e5e5; */
     background-color: #9BB7D4;
+`;
+
+const slideDown = keyframes`
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+`
+
+
+const OptionContainer = styled.div`
+    /* 얘는 클릭을 하면 디스플레를 켜고  */
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 25px;
+    left: 0;
+    width: 240px;
+    height: 75px;
+    animation: ${slideDown} 1s;
+    
+    /* box-sizing: border-box;
+    border: 1px solid #9BB7D4; */
+`;
+
+const Option = styled.div`
+    width: 100%;
+    height: 25px;
+    padding-left: 10px;
+    background-color: #9BB7D4;
+    box-sizing: border-box;
+    border: 1px solid #9BB7D4;
+    color: #ffffff;
+    font-size: 12px;
+    z-index: 1;
+    :nth-child(2)::after {
+        border: 1px solid #e5e5e5;
+    }
+
+    :nth-child(3) {
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
 `;
 
 const InputContainer = styled.div`
@@ -103,8 +157,8 @@ const SignUpBtn = styled.div`
     align-items: center;
     color: #0057A1;
     width: 240px;
-    height: 30px;
-    border-radius: 15px;
+    height: 40px;
+    border-radius: 20px;
     margin-top: 20px;
     /* background-color: #BBC7CE; */
     background-color: #ffffff;
@@ -118,87 +172,114 @@ const SignUpBtn = styled.div`
 `;
 
 const ErrMsg = styled.div`
-    position: absolute;
-    width: 220px;
-    height: 25px;
-    padding: 0px;
-    background: #FFFFFF;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    :after {
-        content: '';
-        position: absolute;
-        border-style: solid;
-        border-width: 8px 10px 0;
-        border-color: #FFFFFF transparent;
-        display: block;
-        width: 0;
-        z-index: 1;
-        bottom: -8px;
-        left: 34px;
-    }
+    width: 240px;
+    height: 8px;
+    border: none;
+    color: #C63A29;
+    font-size: 8px;
 `
+
+
 
 
 function SignUp() {
 
-    const [emailErr, setEmailErr] = useState(false);
+    const [emailErr, setEmailErr] = useState("");
+    const [passwordErr, setPasswordErr] = useState("");
+    const questionList = ["당신의 보물 1호는?", "가장 좋아하는 책은 무엇인가요?", "사랑은 무엇입니까?"]
 
-    const checkEmail = (email) => {
-        let regExp = /^([\w\.\_\-])*[a-zA-Z0-9]+([\w\.\_\-])*([a-zA-Z0-9])+([\w\.\_\-])+@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,8}$/;
-        
-        return regExp.test(email);
+    const selectDom = useRef();
+    const optionContainer = useRef();
+    
+    const checkMail = (e) => {
+        const regExp = /^([\w\.\_\-])*[a-zA-Z0-9]+([\w\.\_\-])*([a-zA-Z0-9])+([\w\.\_\-])+@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,8}$/;
+        const value = e.target.value;
+        let check = regExp.test(value);
+        if (!check) setEmailErr("알맞은 이메일 형식이 아닙니다.")
+        if (check) setEmailErr("")
+        if (value === '') setEmailErr("")
     };
 
-    
+    const checkPassword = (e) => {  
+        const regExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;   
+        const value = e.target.value;
+        let check = regExp.test(value);
+        if (!check) setPasswordErr("비밀번호는 8자 이상 문자가 포함되어야 합니다.")
+        if (check) setPasswordErr("")
+        if (value === '') setPasswordErr("")
+    }
+
+    const openDropDown = () => {
+        console.log('DOM집었냐?', selectDom);
+        selectDom.current.style.borderBottomLeftRadius = 0;
+        selectDom.current.style.borderBottomRightRadius = 0;
+        if(selectDom.current.style.borderBottomLeftRadius === 0) selectDom.current.style.borderBottomLeftRadius = "2px"
+        if(selectDom.current.style.borderBottomRightRadius === 0) selectDom.current.style.borderBottomRightRadius = "2px"
+    }
 
     return (
         <LoginContainer>
             <InnerContainer>
-                <Title>Sign Up</Title>
+                <Title>회원가입</Title>
                 <InputBtnContainer>
                     <InputContainer>
                         <InputTitle>e-mail</InputTitle>
-                        <Email onChange={checkEmail}></Email>
+                        <InputBox onChange={checkMail}></InputBox>
                         <MailIcon>
                             <FontAwesomeIcon icon={faEnvelope} color="#ffffff"/>
                         </MailIcon>
+                        <ErrMsg>{emailErr}</ErrMsg>
                     </InputContainer>
                     <InputContainer>
-                        <InputTitle>name</InputTitle>
-                        <Email></Email>
+                        <InputTitle>이름</InputTitle>
+                        <InputBox></InputBox>
                         <MailIcon>
                             <FontAwesomeIcon icon={faUser} color="#ffffff"/>
                         </MailIcon>
+                        <ErrMsg>{}</ErrMsg>
                     </InputContainer>
                     <InputContainer>
-                        <InputTitle>password</InputTitle>
-                        <Password type='password'></Password>
+                        <InputTitle>비밀번호</InputTitle>
+                        <InputBox type='password' onChange={checkPassword}></InputBox>
                         <LockIcon>
                             <FontAwesomeIcon icon={faLock} color="#ffffff"/>
                         </LockIcon>
+                        <ErrMsg>{passwordErr}</ErrMsg>
                     </InputContainer>
                     <InputContainer>
-                        <InputTitle>password_check</InputTitle>
-                        <Password type='password'></Password>
+                        <InputTitle>비밀번호 확인</InputTitle>
+                        <InputBox type='password'></InputBox>
                         <LockIcon>
                             <FontAwesomeIcon icon={faLock} color="#ffffff"/>
                         </LockIcon>
+                        <ErrMsg>{}</ErrMsg>
                     </InputContainer>
                     <InputContainer>
-                        <InputTitle>question</InputTitle>
-                        <Password></Password>
+                        <InputTitle>비밀번호 찾기 질문</InputTitle>
+                        <Select ref={selectDom}>
+                            {/* <OptionContainer ref={optionContainer}>
+                                {questionList.map((el, idx) => {
+                                    return (
+                                        <Option key={idx}>{el}</Option>
+                                    )
+                                })}
+                            </OptionContainer> */}
+                        </Select>
                         <LockIcon>
                             <FontAwesomeIcon icon={faQuestion} color="#ffffff"/>
                         </LockIcon>
+                        <AngleDown onClick={openDropDown}>
+                            <FontAwesomeIcon icon={faAngleDown} color="#ffffff"/>
+                        </AngleDown>
+                        <ErrMsg>{}</ErrMsg>
                     </InputContainer>
                     <InputContainer>
-                        <InputTitle>anwser</InputTitle>
-                        <Password></Password>
+                        <InputTitle>답변</InputTitle>
+                        <InputBox></InputBox>
                         <LockIcon>
                             <FontAwesomeIcon icon={faKey} color="#ffffff"/>
                         </LockIcon>
+                        <ErrMsg>{}</ErrMsg>
                     </InputContainer>
                     <SignUpBtn>
                         Sign Up

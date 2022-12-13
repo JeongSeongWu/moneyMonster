@@ -15,7 +15,7 @@ const LoginContainer = styled.div`
     align-items: center;
     justify-content: center;
     width: 300px;
-    height: 350px;
+    height: 330px;
     box-shadow: 0 0 5px #e5e5e5;
     border-radius: 5px;
     background: linear-gradient( to bottom, #0057A1, #1C3775 );
@@ -23,7 +23,7 @@ const LoginContainer = styled.div`
 
 const Title = styled.div`
     width: 270px;
-    height: 40px;
+    height: 20px;
     display: flex;
     justify-content: center;
     align-items: center;   
@@ -42,9 +42,7 @@ const InnerContainer = styled.div`
     justify-content: space-around;
     flex-direction: column;
     width: 300px;
-    height: 280px;
-    /* border-top: 1px dashed black;
-    border-bottom: 1px dashed black; */
+    height: 250px;
 `
 
 const BottomContainer = styled.div`
@@ -116,6 +114,12 @@ const LoginBtn = styled.div`
     /* background-color: #BBC7CE; */
     background-color: #ffffff;
     cursor: pointer;
+    :hover {
+        background-color: #03257E;
+        color: #ffffff;
+        border: 1px solid #0057A1;
+        box-sizing: border-box;
+    }
 `;
 
 const SignUp = styled.div`
