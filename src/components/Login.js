@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faLock, faXmark } from "@fortawesome/free-solid-svg-icons";
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -19,7 +19,19 @@ const LoginContainer = styled.div`
     box-shadow: 0 0 5px #e5e5e5;
     border-radius: 5px;
     background: linear-gradient( to bottom, #0057A1, #1C3775 );
-`;
+`
+
+const CloseBtn = styled.div`
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+`
 
 const Title = styled.div`
     width: 270px;
@@ -52,8 +64,7 @@ const BottomContainer = styled.div`
     position: absolute;
     bottom: 3px;
     width: 100%;
-    height: 40px;
-    
+    height: 40px;    
 `;
 
 const InputTitle = styled.div`
@@ -128,9 +139,17 @@ const SignUp = styled.div`
     font-size: 14px;
 `;
 
-function Login() {
+function Login({openSignIn, setOpenSignIn}) {
+
+    const closeModal = () => {
+        setOpenSignIn(false)
+    }
+
     return (
         <LoginContainer>
+            <CloseBtn onClick={closeModal}>
+                <FontAwesomeIcon icon={faXmark} color="#ffffff"/>
+            </CloseBtn>
             <InnerContainer>
                 <Title>PAPER AQUARIUM</Title>
                 <InputBtnContainer>
@@ -154,9 +173,9 @@ function Login() {
                     
                 </InputBtnContainer>
                 <BottomContainer>
-                    <Link to='/signup'>
+                    {/* <Link to='/signup'>
                         <SignUp>Sign Up</SignUp>
-                    </Link>
+                    </Link> */}
                 </BottomContainer>
                 
             </InnerContainer>

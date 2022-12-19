@@ -100,7 +100,7 @@ const Select = styled.div`
 
 const slideDown = keyframes`
     0% {
-        transform: translateY(-100%);
+        transform: translateY(-30%);
     }
 
     100% {
@@ -118,7 +118,9 @@ const OptionContainer = styled.div`
     left: 0;
     width: 240px;
     height: 75px;
-    animation: ${slideDown} 1s;
+    opacity: 0;
+    visibility: hidden;
+    // animation: ${slideDown} 1s;
     
     /* box-sizing: border-box;
     border: 1px solid #9BB7D4; */
@@ -126,7 +128,7 @@ const OptionContainer = styled.div`
 
 const Option = styled.div`
     width: 100%;
-    height: 25px;
+    height: 30px;
     padding-left: 10px;
     background-color: #9BB7D4;
     box-sizing: border-box;
@@ -186,6 +188,7 @@ function SignUp() {
 
     const [emailErr, setEmailErr] = useState("");
     const [passwordErr, setPasswordErr] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
     const questionList = ["당신의 보물 1호는?", "가장 좋아하는 책은 무엇인가요?", "사랑은 무엇입니까?"]
 
     const selectDom = useRef();
@@ -215,6 +218,8 @@ function SignUp() {
         selectDom.current.style.borderBottomRightRadius = 0;
         if(selectDom.current.style.borderBottomLeftRadius === 0) selectDom.current.style.borderBottomLeftRadius = "2px"
         if(selectDom.current.style.borderBottomRightRadius === 0) selectDom.current.style.borderBottomRightRadius = "2px"
+        setIsOpen(!isOpen);
+        console.log('isOpen?', isOpen)
     }
 
     return (
@@ -257,13 +262,13 @@ function SignUp() {
                     <InputContainer>
                         <InputTitle>비밀번호 찾기 질문</InputTitle>
                         <Select ref={selectDom}>
-                            {/* <OptionContainer ref={optionContainer}>
-                                {questionList.map((el, idx) => {
-                                    return (
-                                        <Option key={idx}>{el}</Option>
-                                    )
-                                })}
-                            </OptionContainer> */}
+                            <OptionContainer ref={optionContainer} isOpen={isOpen}>
+                            {questionList.map((el, idx) => {
+                                return (
+                                    <Option key={idx}>{el}</Option>
+                                )
+                            })}
+                            </OptionContainer>
                         </Select>
                         <LockIcon>
                             <FontAwesomeIcon icon={faQuestion} color="#ffffff"/>
