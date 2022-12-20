@@ -2,9 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faXmark } from "@fortawesome/free-solid-svg-icons";
-
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { closeSignInModal } from "../app/store.js"
+import { useDispatch } from "react-redux";
 
 const LoginContainer = styled.div`
     position: relative;
@@ -139,15 +138,14 @@ const SignUp = styled.div`
     font-size: 14px;
 `;
 
-function Login({openSignIn, setOpenSignIn}) {
+function Login() {
 
-    const closeModal = () => {
-        setOpenSignIn(false)
-    }
-
+    let dispatch = useDispatch()
+    
+    
     return (
         <LoginContainer>
-            <CloseBtn onClick={closeModal}>
+            <CloseBtn onClick={() => dispatch(closeSignInModal())}>
                 <FontAwesomeIcon icon={faXmark} color="#ffffff"/>
             </CloseBtn>
             <InnerContainer>

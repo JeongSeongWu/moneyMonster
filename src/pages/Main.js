@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Login from "../components/Login";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { openSignInModal } from "../app/store.js";
+
 
 const Container = styled.div`
     position: relative;
@@ -56,31 +59,49 @@ const NavBtn = styled.div`
     width: 60px;
     height: 20px;
     color: #ffffff;
+    cursor: pointer;
 `
 
 function Main() {
+    // Redux store에 있던 state가 남음
+    let openSignIn = useSelector(state => state.openSignIn.open);
+    
+    console.log('openSignIn', openSignIn);
+    
+    
+    let dispatch = useDispatch();
+    
 
-    const [openSignIn, setOpenSignIn] = useState(false);
+    /**
+     * onClick={() => { dispatch(openSignInModal) }}
+     */
 
     const openModal = () => {
-        setOpenSignIn(true)
+        dispatch(openSignInModal);
+
+        console.log('openSignIn 2', openSignIn)
     }
+
+
+
+
+    
     return(
         <Container>
-            <Header>
+            <Header> 
                 <Nav>
                     <Title>
                         PAPER AQUARIUM
                     </Title>
                     <ButtonContainer>
-                        <NavBtn onClick={openModal}>SignIn</NavBtn>
+                        <NavBtn onClick={() => {dispatch(openSignInModal())}}>SignIn</NavBtn>
                         <NavBtn>SignUp</NavBtn>
                     </ButtonContainer>
                 </Nav>
             </Header>
             {openSignIn ?
             <ModalBackground>
-                <Login openSignIn={openSignIn} setOpenSignIn={setOpenSignIn}></Login>
+                <Login></Login>
             </ModalBackground>
             :
             ""}
