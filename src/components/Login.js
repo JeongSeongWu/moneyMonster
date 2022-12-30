@@ -13,6 +13,7 @@ const LoginContainer = styled.div`
     box-sizing: border-box;
     align-items: center;
     justify-content: center;
+    z-index: 9;
     width: 300px;
     height: 330px;
     box-shadow: 0 0 5px #e5e5e5;

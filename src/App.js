@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import styled from 'styled-components';
 import Main from './pages/Main';
+import Gathering from './pages/Gathering'
 
 import './App.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -22,6 +23,7 @@ function App() {
     <Container>
         <Routes>
           <Route path='/' element={<Main/>}/>
+          <Route path='/gathering' element={<Gathering/>}/>
         </Routes>
     </Container>
   );

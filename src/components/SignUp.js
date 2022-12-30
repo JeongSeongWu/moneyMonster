@@ -1,14 +1,11 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { faQuestion } from "@fortawesome/free-solid-svg-icons";
+import { faQuestion, faXmark, faAngleDown, faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faKey } from "@fortawesome/free-solid-svg-icons";
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { closeSignUpModal } from "../app/store";
+import { useDispatch } from "react-redux";
 
 const LoginContainer = styled.div`
     position: relative;
@@ -20,10 +17,23 @@ const LoginContainer = styled.div`
     justify-content: center;
     width: 300px;
     height: 550px;
+    z-index: 9;
     box-shadow: 0 0 5px #e5e5e5;
     border-radius: 5px;
     background: linear-gradient( to bottom, #0057A1, #1C3775 );
 `;
+
+const CloseBtn = styled.div`
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+`
 
 const Title = styled.div`
     width: 270px;
@@ -47,8 +57,7 @@ const InnerContainer = styled.div`
     justify-content: space-around;
     flex-direction: column;
     width: 300px;
-    height: 480px;
-    
+    height: 480px;    
 `
 
 const InputTitle = styled.div`
@@ -186,6 +195,8 @@ const ErrMsg = styled.div`
 
 function SignUp() {
 
+    let dispatch = useDispatch();
+
     const [emailErr, setEmailErr] = useState("");
     const [passwordErr, setPasswordErr] = useState("");
     const [isOpen, setIsOpen] = useState(false);
@@ -224,8 +235,11 @@ function SignUp() {
 
     return (
         <LoginContainer>
+            <CloseBtn onClick={() => dispatch(closeSignUpModal())}>
+                <FontAwesomeIcon icon={faXmark} color="#ffffff"/>
+            </CloseBtn>
             <InnerContainer>
-                <Title>회원가입</Title>
+                <Title>SignUp</Title>
                 <InputBtnContainer>
                     <InputContainer>
                         <InputTitle>e-mail</InputTitle>

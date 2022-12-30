@@ -1,3 +1,4 @@
+import { faL } from '@fortawesome/free-solid-svg-icons';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 
@@ -22,7 +23,23 @@ export let openSignIn = createSlice({
   }
 });
 
+export let openSignUp = createSlice({
+  name: 'openSignUp',
+  initialState: {
+    open: false
+  },
+  reducers: {
+    openSignUpModal(state) {
+      state.open = true
+    },
+    closeSignUpModal(state){
+      state.open = false
+    }
+  }
+})
+
 export let { openSignInModal, closeSignInModal } = openSignIn.actions
+export let { openSignUpModal, closeSignUpModal } = openSignUp.actions
 
 
 
@@ -30,5 +47,6 @@ export const store = configureStore({
   reducer: {
     counter: counterReducer,
     openSignIn: openSignIn.reducer,
+    openSignUp: openSignUp.reducer,
   },
 });
